@@ -2,7 +2,7 @@ const authService = require('./auth.service')
 const userService = require('../user/user.service')
 const logger = require('../../services/logger.service')
 const jwt = require('jsonwebtoken')
-const nodemailer = require("nodemailer");
+const sgMail = require('@sendgrid/mail')
 require('dotenv').config()
 
 
@@ -39,58 +39,39 @@ async function signup(req, res) {
 
 
 function sendMailToConfirm(email, token, type) {
-    console.log('send mail');
-    // Step 1
-    console.log('start send email');
-    console.log(process.env.email, process.env.pass);
-    let transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: process.env.email, // TODO: your gmail account
-            pass: process.env.pass  // TODO: your gmail password
-        }
-    });
-    // Step 2
-    // const url = `http://localhost:8080/#/confirmation/${token}/${type}`;
+    console.log(process.env.email);
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const url = `https://xl-shop.herokuapp.com//#/confirmation/${token}/${type}`;
-    const msg = `
-    <div  style="direction:rtl"> 
-    <h3 style="text-align:center;">  שלום שמחים שהצטרפתם לאתר - מידות גדולות    </h3>
-    <h3  style="text-align:center;">כנס/י ללינק לאימות :</h3> 
-  <div  style="text-align:center;margin-bottom:10px;">   <a  href="${url}">הקלק כאן לאימות  והתחברות</a> </div>
-   <div  style="text-align:center;">  
-   <img style="background-color:#2d383a;width:100px;height:90px;" src="cid:logo"> 
-    </div>
-    </div>
-    `
-    let mailOptions = {
-        from: process.env.email, // TODO: email sender
-        to: email, // TODO: email receiver
-        subject: 'Confirm Email',
-        attachments: [{
-            filename: 'logo.png',
-            path: 'logo.png',
-            cid: 'logo'
-        }],
-        html: msg,
-    };
-    console.log('reached here 76');
+    const msg = {
+        to: email, // Change to your recipient
+        from: process.env.email, // Change to your verified sender
+        subject: 'אימות מייל',
+        html: `
+        <div  style="direction:rtl"> 
+        <h3 style="text-align:center;">  שלום שמחים שהצטרפתם לאתר - מידות גדולות    </h3>
+        <h3  style="text-align:center;">כנס/י ללינק לאימות :</h3> 
+      <div  style="text-align:center;margin-bottom:10px;">   <a  href="${url}">הקלק כאן לאימות  והתחברות</a> </div>
+       <div  style="text-align:center;">  
+       <img style="background-color:#2d383a;width:100px;height:90px;" src="cid:logo"> 
+        </div>
+        </div>
+        `,
+    }
+    sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+    // Step 2
 
-    // Step 3
-    transporter.sendMail(mailOptions, (err, data) => {
-        console.log({ mailOptions, err });
-
-        if (err) {
-            return console.log('Error occurs', err);
-        }
-        return console.log(' confirm Email sent!!!');
-    });
 }
 
 
 
 function _createToken(param) {
-    console.log('env:', process.env.emailSecret, { jwt });
     return jwt.sign({ data: param }, process.env.emailSecret, { expiresIn: '1d' });
 }
 

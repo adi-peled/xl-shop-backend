@@ -4,8 +4,7 @@ const authService = require('../auth/auth.service');
 const authController = require('../auth/auth.controller')
 const jwt = require('jsonwebtoken')
 const bcrypt = require("bcryptjs")
-
-const nodemailer = require("nodemailer");
+const sgMail = require('@sendgrid/mail')
 const { getById } = require('./user.service');
 const { logout } = require('../auth/auth.controller');
 require('dotenv').config()
@@ -123,37 +122,22 @@ async function confirmEmail(req, res) {
 async function sendMailToOwner(req, res) {
     const { userId, orderId } = req.query
     const user = await userService.getById(userId)
-
     const order = user.orders.find(o => o.id === orderId)
-    console.log({ orderId, user, order });
-    // Step 1
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.email, // TODO: your gmail account
-            pass: process.env.pass  // TODO: your gmail password
-        }
-    });
-    // Step 2
-    let mailOptions = {
-        from: process.env.email, // TODO: email sender
-        to: process.env.email, // TODO: email receiver
-        subject: 'order',
-        attachments: [{
-            filename: 'logo.png',
-            path: 'logo.png',
-            cid: 'logo'
-        }],
-        html: _renderMsg(user, order)
-    };
-    // Step 3
-    console.log({ mailOptions, transporter });
-    transporter.sendMail(mailOptions, (err, data) => {
-        if (err) {
-            return console.log('Error occurs', { err });
-        }
-        return console.log('Email sent!!!');
-    });
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    const msg = {
+        to: user.email, // Change to your recipient
+        from: process.env.email, // Change to your verified sender
+        subject: 'הזמנה',
+        html: _renderMsg(user, order),
+    }
+    sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
 }
 
 function _renderMsg(user, order) {
@@ -197,44 +181,32 @@ async function sendMails(req, res) {
     const { title, text } = req.query
     const users = await userService.query()
     const usersAgreeToEmailSends = users.filter(user => user.emailSends)
-    const emails = usersAgreeToEmailSends.map(user => user.email)
-    console.log(title, text);
-    // Step 1
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.email, // TODO: your gmail account
-            pass: process.env.pass  // TODO: your gmail password
+    usersAgreeToEmailSends.forEach(user => {
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+        const msg = {
+            to: user.email, // Change to your recipient
+            from: process.env.email, // Change to your verified sender
+            subject: title,
+            html: `<div>
+            <p style="text-align:center;font-size:25px">  ${text}  </p>
+                  <div style="text-align:center;">
+                  <img style="background-color:#2d383a;width:100px;height:90px;" src="cid:logo"> 
+                 </div>
+            </div>`,
         }
-    });
-    // Step 2
-    let mailOptions = {
-        from: process.env.email, // TODO: email sender
-        to: emails, // TODO: email receiver
-        subject: title,
-        html: `<div>
-        <p style="text-align:center;font-size:25px">  ${text}  </p>
-              <div style="text-align:center;">
-              <img style="background-color:#2d383a;width:100px;height:90px;" src="cid:logo"> 
-             </div>
-        </div>`,
-        attachments: [{
-            filename: 'logo.png',
-            path: 'logo.png',
-            cid: 'logo'
-        }],
-    };
-    // Step 3
-    transporter.sendMail(mailOptions, (err, data) => {
-        console.log(mailOptions.from)
-        console.log(mailOptions.html);
-        console.log(mailOptions.to);
-        if (err) {
-            return console.log('Error occurs', { err });
-        }
-        return console.log('Email sent!!!');
-    });
+        sgMail
+            .send(msg)
+            .then(() => {
+                console.log('Email sent')
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    })
 }
+
+
+
 
 module.exports = {
     getUser,
