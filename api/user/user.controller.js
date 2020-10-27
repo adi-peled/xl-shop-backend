@@ -126,7 +126,7 @@ async function sendMailToOwner(req, res) {
     const order = user.orders.find(o => o.id === orderId)
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const msg = {
-        to: user.email, // Change to your recipient
+        to:  process.env.email, // Change to your recipient
         from: process.env.email, // Change to your verified sender
         subject: 'הזמנה',
         html: _renderMsg(user, order),
