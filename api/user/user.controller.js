@@ -173,7 +173,7 @@ function _renderMsg(user, order) {
           <h4>  צבע: ${item.color}<h4/>
           <h4> מידה: ${item.size}<h4/>
           <h4>  מחיר: ${item.price}<h4/>
-          <a href="https://xl-shop.herokuapp.com/#/item/${item._id}">  הקלק כאן לצפייה במוצר   </a>
+          <a href="http://www.midot-gdolot.com/#/item/${item._id}">  הקלק כאן לצפייה במוצר   </a>
           </div>
     `
     })

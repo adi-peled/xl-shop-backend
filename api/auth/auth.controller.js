@@ -41,7 +41,7 @@ async function signup(req, res) {
 function sendMailToConfirm(email, token, type) {
     const fs = require('fs')
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-    const url = `https://xl-shop.herokuapp.com//#/confirmation/${token}/${type}`;
+    const url = `http://www.midot-gdolot.com/#/confirmation/${token}/${type}`;
     const msg = {
         to: email, // Change to your recipient
         from: process.env.email, // Change to your verified sender
