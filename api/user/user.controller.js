@@ -121,6 +121,7 @@ async function confirmEmail(req, res) {
 
 async function sendMailToOwner(req, res) {
     const { userId, orderId } = req.query
+    const fs = require('fs')
     const user = await userService.getById(userId)
     const order = user.orders.find(o => o.id === orderId)
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
@@ -129,6 +130,13 @@ async function sendMailToOwner(req, res) {
         from: process.env.email, // Change to your verified sender
         subject: 'הזמנה',
         html: _renderMsg(user, order),
+        attachments: [{
+            filename: 'logo',
+            type: 'image/png',
+            content_id: 'logo',
+            content: fs.readFileSync('logo.png', { encoding: 'base64' }),
+            disposition: 'inline',
+        }],
     }
     sgMail
         .send(msg)
@@ -179,6 +187,8 @@ function _renderMsg(user, order) {
 
 async function sendMails(req, res) {
     const { title, text } = req.query
+    const fs = require('fs')
+    console.log({ fs });
     const users = await userService.query()
     const usersAgreeToEmailSends = users.filter(user => user.emailSends)
     usersAgreeToEmailSends.forEach(user => {
@@ -190,9 +200,17 @@ async function sendMails(req, res) {
             html: `<div>
             <p style="text-align:center;font-size:25px">  ${text}  </p>
                   <div style="text-align:center;">
-                  <img style="background-color:#2d383a;width:100px;height:90px;" src="cid:logo"> 
+                  <img style="background-color:#2d383a;width:100px;height:90px;" src="cid:logo" > 
                  </div>
             </div>`,
+
+            attachments: [{
+                filename: 'logo',
+                type: 'image/png',
+                content_id: 'logo',
+                content: fs.readFileSync('logo.png', { encoding: 'base64' }),
+                disposition: 'inline',
+            }],
         }
         sgMail
             .send(msg)

@@ -1,0 +1,42 @@
+{
+  "files": {
+    "main.css": "/static/css/main.af99bc3c.chunk.css",
+    "main.js": "/static/js/main.26278f41.chunk.js",
+    "main.js.map": "/static/js/main.26278f41.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.32aae409.js",
+    "runtime-main.js.map": "/static/js/runtime-main.32aae409.js.map",
+    "static/css/2.bf574db1.chunk.css": "/static/css/2.bf574db1.chunk.css",
+    "static/js/2.c62c88c6.chunk.js": "/static/js/2.c62c88c6.chunk.js",
+    "static/js/2.c62c88c6.chunk.js.map": "/static/js/2.c62c88c6.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.bf574db1.chunk.css.map": "/static/css/2.bf574db1.chunk.css.map",
+    "static/css/main.af99bc3c.chunk.css.map": "/static/css/main.af99bc3c.chunk.css.map",
+    "static/js/2.c62c88c6.chunk.js.LICENSE.txt": "/static/js/2.c62c88c6.chunk.js.LICENSE.txt",
+    "static/media/Home.scss": "/static/media/1.02f067c7.jpeg",
+    "static/media/App.scss": "/static/media/SecularOne-Regular.3786d92f.ttf",
+    "static/media/cart.4e5e2fa8.svg": "/static/media/cart.4e5e2fa8.svg",
+    "static/media/delete.53c9f4b6.svg": "/static/media/delete.53c9f4b6.svg",
+    "static/media/edit.249fb4c7.svg": "/static/media/edit.249fb4c7.svg",
+    "static/media/email.e589bb63.svg": "/static/media/email.e589bb63.svg",
+    "static/media/heart-color2.8331c613.svg": "/static/media/heart-color2.8331c613.svg",
+    "static/media/heart-white2.12f3de7e.svg": "/static/media/heart-white2.12f3de7e.svg",
+    "static/media/info.ea6f6a2b.svg": "/static/media/info.ea6f6a2b.svg",
+    "static/media/location.ca6c4374.svg": "/static/media/location.ca6c4374.svg",
+    "static/media/logo.a9cbe583.png": "/static/media/logo.a9cbe583.png",
+    "static/media/menu.b005f14d.svg": "/static/media/menu.b005f14d.svg",
+    "static/media/phone.214a9d31.svg": "/static/media/phone.214a9d31.svg",
+    "static/media/profile.99b6c0a3.svg": "/static/media/profile.99b6c0a3.svg",
+    "static/media/styles.css": "/static/media/revicons.e8746a62.woff",
+    "static/media/shirt-test.1559c68c.jpeg": "/static/media/shirt-test.1559c68c.jpeg",
+    "static/media/shop.b0fc79b7.svg": "/static/media/shop.b0fc79b7.svg",
+    "static/media/show-password.61d05d1a.png": "/static/media/show-password.61d05d1a.png",
+    "static/media/whatsapp.be8b84bc.svg": "/static/media/whatsapp.be8b84bc.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.32aae409.js",
+    "static/css/2.bf574db1.chunk.css",
+    "static/js/2.c62c88c6.chunk.js",
+    "static/css/main.af99bc3c.chunk.css",
+    "static/js/main.26278f41.chunk.js"
+  ]
+}

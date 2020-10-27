@@ -39,7 +39,7 @@ async function signup(req, res) {
 
 
 function sendMailToConfirm(email, token, type) {
-    console.log(process.env.email);
+    const fs = require('fs')
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const url = `https://xl-shop.herokuapp.com//#/confirmation/${token}/${type}`;
     const msg = {
@@ -56,6 +56,13 @@ function sendMailToConfirm(email, token, type) {
         </div>
         </div>
         `,
+        attachments: [{
+            filename: 'logo',
+            type: 'image/png',
+            content_id: 'logo',
+            content: fs.readFileSync('logo.png', { encoding: 'base64' }),
+            disposition: 'inline',
+        }],
     }
     sgMail
         .send(msg)
