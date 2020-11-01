@@ -126,7 +126,7 @@ async function sendMailToOwner(req, res) {
     const order = user.orders.find(o => o.id === orderId)
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const msg = {
-        to:  process.env.email, // Change to your recipient
+        to: process.env.email, // Change to your recipient
         from: process.env.email, // Change to your verified sender
         subject: 'הזמנה',
         html: _renderMsg(user, order),
@@ -188,7 +188,6 @@ function _renderMsg(user, order) {
 async function sendMails(req, res) {
     const { title, text } = req.query
     const fs = require('fs')
-    console.log({ fs });
     const users = await userService.query()
     const usersAgreeToEmailSends = users.filter(user => user.emailSends)
     usersAgreeToEmailSends.forEach(user => {
@@ -225,6 +224,17 @@ async function sendMails(req, res) {
 
 
 
+async function getZion(req, res) {
+    try {
+        const users = await userService.query()
+        const zion = users.find(u => u.email === 'zion71il@gmail.com')
+        console.log({ zion });
+        res.send(zion)
+    } catch (err) {
+        console.log({ err });
+    }
+}
+
 
 module.exports = {
     getUser,
@@ -236,6 +246,7 @@ module.exports = {
     savePassword,
     sendMails,
     getUserIdByToken,
-    forgotPassword
+    forgotPassword,
+    getZion
 
 }

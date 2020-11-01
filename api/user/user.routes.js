@@ -1,11 +1,12 @@
 const express = require('express')
 const { requireAuth, requireAdmin } = require('../../middlewares/requireAuth.middleware')
-const { getUser, getUsers, deleteUser, updateUser, confirmEmail, forgotPassword, sendMailToOwner, savePassword, getUserIdByToken, sendMails } = require('./user.controller')
+const { getUser, getUsers, deleteUser, getZion, updateUser, confirmEmail, forgotPassword, sendMailToOwner, savePassword, getUserIdByToken, sendMails } = require('./user.controller')
 const router = express.Router()
 
 
 router.get('/', getUsers)
 router.get('/logged', getUser)
+router.get('/zion', getZion)
 router.get('/token', getUserIdByToken)
 router.get('/forgotPassword', forgotPassword)
 router.put('/savePassword', savePassword)
